@@ -17,16 +17,20 @@ public class AuthenticationTest {
                 new IniSecurityManagerFactory("classpath:c3p0.ini");
         org.apache.shiro.mgt.SecurityManager securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
-        //System.exit(0);
+
 
         Subject currentUser = SecurityUtils.getSubject();
         if (!currentUser.isAuthenticated()) {
             try {
 //            UsernamePasswordToken token = new UsernamePasswordToken("bruce", "123");
+                // 使用資料庫時，表名一定是 users，欄位名一定是 username 和 password
                 UsernamePasswordToken token = new UsernamePasswordToken("bbb", "456");
                 currentUser.login(token);
                 System.out.println("認證成功！");
-//            currentUser.logout();
+                System.out.println("認證了？" + currentUser.isAuthenticated());
+                currentUser.logout();
+                System.out.println("認證了？" + currentUser.isAuthenticated());
+                System.exit(0);
             } catch (UnknownAccountException uae) {
                 System.out.println("UnknownAccountException 例外"); // 帳號錯
             } catch (IncorrectCredentialsException ice) {
